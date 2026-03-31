@@ -66,6 +66,12 @@ The original homepage had several interactive features that needed to work ident
 
 ## Running Locally
 
+**Node.js (exact for Docker):** the container image uses **Node.js 20.18.3** (`Dockerfile.frontend` → `node:20.18.3-bookworm`). For a local install without Docker, use **Node.js 20.18.3 or newer** (`package.json` → `engines`). Matching **20.18.3** is recommended so behavior matches Docker (for example with [nvm](https://github.com/nvm-sh/nvm): `nvm install 20.18.3 && nvm use 20.18.3`). Check with `node -v`.
+
+**Yarn / Vite:** `@react-router/dev` brings in `vite-node`, which allows Vite 5, 6, or 7. Yarn may otherwise resolve **Vite 7**, which requires **Node ≥ 20.19** and breaks `yarn install` on **20.18.3**. This repo pins **Vite 5.4.21** via `package.json` → `resolutions` and a matching `devDependency`. Always commit `yarn.lock` with the project.
+
+**ESM:** `package.json` sets `"type": "module"` so Node can load the SSR bundle (`build/server/index.js`). Legacy CommonJS configs use the **`.cjs`** extension: `webpack.config.cjs`, `postcss.config.cjs`, and `scripts/react-renderer/compile.cjs`. To run Webpack manually: `webpack --config webpack.config.cjs`.
+
 Docker is required to run locally. From the root directory:
 
 ```

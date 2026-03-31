@@ -3,13 +3,15 @@ import React from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
 
-// Run the legacy initialization script that detects OS/browser and sets classes on the HTML element
-import "../static/js/page/common.js";
-
 startTransition(() => {
   hydrateRoot(
     document,
     React.createElement(HydratedRouter, null),
   );
+  // `common.js` mutates `<html>` classes (OS / UA). Running it before hydration
+  // mismatches server HTML and causes React hydration to fail on the client.
+  queueMicrotask(() => {
+    void import("../static/js/page/common.js");
+  });
 });
 

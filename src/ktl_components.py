@@ -50,7 +50,7 @@ class KTLComponentExtension(Extension):
     @lru_cache(maxsize=None)
     def __exec_render(self, name, props_json):
         nodejs = subprocess.Popen(
-            ["node", "compile.js", name, props_json],
+            ["node", "compile.cjs", name, props_json],
             cwd="scripts/react-renderer",
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
